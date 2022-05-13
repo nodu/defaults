@@ -72,3 +72,7 @@ alias sv='sudo nvim'
 
 alias portcheck-local='sudo netstat -tulpn | grep LISTEN'
 alias portcheck-remote='sudo sudo nmap -sTU -O'
+
+alias d='docker'
+alias dc='docker-compose'
+
