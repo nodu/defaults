@@ -75,4 +75,5 @@ alias portcheck-remote='sudo sudo nmap -sTU -O'
 
 alias d='docker'
 alias dc='docker-compose'
+alias dcr='docker-compose restart'
 
