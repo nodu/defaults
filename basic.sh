@@ -20,6 +20,7 @@ alias rm='rm -i'
 alias ll='ls -al'
 alias l='ls -alrt'
 
+alias g='git'
 alias ga='git add'
 alias gaa='git add -A :/'
 alias gd='git diff --color'
