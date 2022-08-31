@@ -20,6 +20,7 @@ alias rm='rm -i'
 alias ll='ls -al'
 alias l='ls -alrt'
 
+alias g='git'
 alias ga='git add'
 alias gaa='git add -A :/'
 alias gd='git diff --color'
@@ -75,3 +76,8 @@ alias sv='sudo nvim'
 
 alias portcheck-local='sudo netstat -tulpn | grep LISTEN'
 alias portcheck-remote='sudo sudo nmap -sTU -O'
+
+alias d='docker'
+alias dc='docker-compose'
+alias dcr='docker-compose restart'
+
