@@ -29,6 +29,7 @@ alias gc='git commit -v -m'
 alias gs='git status'
 alias gst='git status'
 alias gp='git push'
+alias gl='git pull'
 
 alias ggpush='git push origin "$(git_current_branch)"'
 alias ggpull='git pull origin "$(git_current_branch)"'
