@@ -35,13 +35,14 @@ alias gl='git pull'
 alias ggpush='git push origin "$(git_current_branch)"'
 alias ggpull='git pull origin "$(git_current_branch)"'
 
-mn-alias tail-logs="tail `ls -rt /var/log/ -I 'wtmp*' -I '*.gz' -I 'dpkg*gz' -I 'postgresql'` -vf"
+alias mn-tail-logs="tail `ls -rt /var/log/ -I 'wtmp*' -I '*.gz' -I 'dpkg*gz' -I 'postgresql'` -vf"
 
 mn-tail-logsf () {
   tail $(ls -rt /var/log/ -I 'wtmp*' -I '*.gz' -I 'dpkg*gz' -I 'postgresql') -vf
 }
 
 alias mn-whatsmyip="curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'"
+
 # This handy tool tells you how much space you have left on a drive
 alias df='df -h'
 #alias du='du -h --max-depth=1'
