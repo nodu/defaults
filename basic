@@ -30,7 +30,14 @@ alias gc='git commit -v -m'
 alias gs='git status'
 alias gst='git status'
 alias gp='git push'
-alias gl='git pull'
+alias gpl='git pull'
+alias gco='git checkout'
+alias gcp="git cherry-pick"
+
+alias gl='git prettylog'
+glog='git log --oneline --decorate --graph'
+glgp='git log --stat -p'
+
 
 alias ggpush='git push origin "$(git_current_branch)"'
 alias ggpull='git pull origin "$(git_current_branch)"'
