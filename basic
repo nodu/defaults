@@ -23,6 +23,8 @@ alias l='ls -alrt'
 alias g='git'
 alias ga='git add'
 alias gaa='git add -A :/'
+alias gai='git add -i'
+
 alias gd='git diff --color'
 alias gpom='git pull origin master'
 alias gpum='git push origin master'
