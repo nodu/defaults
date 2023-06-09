@@ -83,6 +83,7 @@ unarchive () {
 alias sudo='sudo '
 
 alias v='nvim'
+alias V='nvim .'
 alias sv='sudo nvim'
 
 alias mn-portcheck-local='sudo netstat -tulpn | grep LISTEN'
