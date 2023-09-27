@@ -53,6 +53,10 @@ mn-tail-logsf () {
 
 alias mn-whatsmyip="curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'"
 
+alias whereami-latlong='curl ipinfo.io/loc'¬
+alias whereami-country='curl ipinfo.io/country'¬
+alias whereami='curl ipinfo.io/json'¬
+
 # This handy tool tells you how much space you have left on a drive
 alias df='df -h'
 #alias du='du -h --max-depth=1'
