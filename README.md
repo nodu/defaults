@@ -6,3 +6,5 @@ curl https://bitbucket.org/nodu/defaults/raw/master/basic -o /tmp/basic && sourc
 wget https://bit.ly/3J668Uo -O /tmp/basic && source /tmp/basic
 
 curl https://bit.ly/3J668Uo -o /tmp/basic && source /tmp/basic
+
+echo 'source /home/pi/defaults/basic' >> ~/.bashrc
