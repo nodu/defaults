@@ -29,13 +29,16 @@ alias gd='git diff --color'
 alias gpom='git pull origin master'
 alias gpum='git push origin master'
 alias gc='git commit -v -m'
-alias gs='git stash'
-alias gsa='git stash apply'
 alias gst='git status'
 alias gp='git push'
 alias gpl='git pull'
 alias gco='git checkout'
+alias gcop='git checkout -p'
 alias gcp="git cherry-pick"
+
+alias gs='git stash'
+alias gsa='git stash apply'
+alias gcheckpoint='git stash && git stash apply'
 
 alias gl='git prettylog'
 glog='git log --oneline --decorate --graph'
