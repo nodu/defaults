@@ -1,10 +1,8 @@
-wget https://bitbucket.org/nodu/defaults/raw/master/basic -O /tmp/basic && source /tmp/basic
+wget https://bitbucket.org/nodu/defaults/raw/master/basic -O /tmp/basic.sh && source /tmp/basic
+curl https://bitbucket.org/nodu/defaults/raw/master/basic -o /tmp/basic.sh && source /tmp/basic
 
-curl https://bitbucket.org/nodu/defaults/raw/master/basic -o /tmp/basic && source /tmp/basic
 
+wget http://bit.ly/basicsh -O /tmp/basic.sh && source /tmp/basic.sh
+curl http://bit.ly/basicsh -o /tmp/basic.sh && source /tmp/basic.sh
 
-wget https://bit.ly/3J668Uo -O /tmp/basic && source /tmp/basic
-
-curl https://bit.ly/3J668Uo -o /tmp/basic && source /tmp/basic
-
-echo 'source /home/pi/defaults/basic' >> ~/.bashrc
+echo 'source ~/defaults/basic.sh' >> ~/.bashrc

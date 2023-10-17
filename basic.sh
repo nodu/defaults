@@ -54,11 +54,6 @@ mn-tail-logsf () {
   tail $(ls -rt /var/log/ -I 'wtmp*' -I '*.gz' -I 'dpkg*gz' -I 'postgresql') -vf
 }
 
-alias mn-whatsmyip="curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'"
-
-alias mn-whereami-latlong='curl ipinfo.io/loc'
-alias mn-whereami-country='curl ipinfo.io/country'
-alias mn-whereami='curl ipinfo.io/json'
 
 # This handy tool tells you how much space you have left on a drive
 alias df='df -h'
@@ -99,8 +94,21 @@ alias v='nvim'
 alias V='nvim .'
 alias sv='sudo nvim'
 
+#Networking
+alias mn-whatsmyip="curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'"
+alias mn-whereami-latlong='curl ipinfo.io/loc'
+alias mn-whereami-country='curl ipinfo.io/country'
+alias mn-whereami='curl ipinfo.io/json'
+
 alias mn-portcheck-local='sudo netstat -tulpn | grep LISTEN'
 alias mn-portcheck-remote='sudo sudo nmap -sTU -O'
+
+telnet 192.168.8.6
+ip -br address show
+ip show
+ifconfig
+ip link show
+
 
 alias d='docker'
 alias dc='docker-compose'
