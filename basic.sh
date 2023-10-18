@@ -24,7 +24,6 @@ alias g='git'
 alias ga='git add'
 alias gaa='git add -A :/'
 alias gai='git add -i'
-
 alias gd='git diff --color'
 alias gpom='git pull origin master'
 alias gpum='git push origin master'
@@ -35,15 +34,12 @@ alias gpl='git pull'
 alias gco='git checkout'
 alias gcop='git checkout -p'
 alias gcp="git cherry-pick"
-
 alias gs='git stash'
 alias gsa='git stash apply'
 alias gcheckpoint='git stash && git stash apply'
-
 alias gl='git prettylog'
-glog='git log --oneline --decorate --graph'
-glgp='git log --stat -p'
-
+alias glog='git log --oneline --decorate --graph'
+alias glgp='git log --stat -p'
 alias ggpush='git push origin "$(git_current_branch)"'
 alias ggpull='git pull origin "$(git_current_branch)"'
 
@@ -98,15 +94,74 @@ alias mn-whereami-latlong='curl ipinfo.io/loc'
 alias mn-whereami-country='curl ipinfo.io/country'
 alias mn-whereami='curl ipinfo.io/json'
 
-alias mn-portcheck-local='sudo netstat -tulpn | grep LISTEN'
-alias mn-portcheck-remote='sudo sudo nmap -sTU -O'
+# Layer 1: Physical - Is our physical interface up?
+alias mn-net1-interfaces='ip -br link show'
+alias mn-net1-interfaces-more='ifconfig'
+mn-net1-interface-up() {
+	#if down:
+	ip link set $1 up
+}
+mn-net1-interface-more() {
+	#show additional stats like dropped packets
+	ip -s link show $1
+}
 
-# telnet 192.168.8.6
-# ip -br address show
-# ip show
-# ifconfig
-# ip link show
+# Layer 2: Data Link 'local Network'
+alias mn-net2-neighbors='ip neighbor show' # Check ARP Table
+mn-net2-neighbor-recheck() {
+	# args: IP dev interface
+	#force new ARP resolution by deleting the record
+	ip neighbor delete $1 $2 $3
+}
 
-alias d='docker'
-alias dc='docker-compose'
-alias dcr='docker-compose restart'
+# Layer 3: Network/Internet
+alias mn-net3-ip-address='ip -br address show' # 1st check local IP address; rules out DHCP or misconfig issues
+mn-net3-ping() {
+	# Start troubleshooting remote host resolution
+	ping $1
+}
+mn-net3-traceroute() {
+	# Next check the route to the remote host with
+	traceroute $1
+}
+
+alias mn-net3-gateway='ip route show' #check routing table for upstream gateways
+mn-net3-gateway-check() {
+	# check the route for a specific prefix:
+	#ip route show 10.0.0.0/8
+	ip route show $1
+}
+mn-net3-dns-check() {
+	#DNS not L3 protocol
+	##nslookup www.google.com
+	nslookup $1
+}
+
+# Layer 4: Transport - TCP/UDP
+alias mn-net4-ports-local='ss -tunlp4' #check local listening ports
+# -t - Show TCP ports.
+# -u - Show UDP ports.
+# -n - Do not try to resolve hostnames.
+# -l - Show only listening ports.
+# -p - Show the processes that are using a particular socket.
+# -4 - Show only IPv4 sockets.
+
+alias mn-net4-ports-local-process='sudo netstat -tulpn' #show process
+mn-net4-ports-remote() {
+	#$1 ip/host
+	sudo nmap -sTU -O $1
+}
+mn-net4-port-connection-tcp() {
+	# telnet database.example.com 3306
+	# $1 ip/host
+	# $2 port
+	telnet $1 $2
+}
+
+mn-net4-port-connection-udp() {
+	# Danger, uninstall after using nc
+	# nc 192.168.122.1 -u 80
+	# $1 ip/host
+	# $2 port
+	nc $1 -u $2
+}
