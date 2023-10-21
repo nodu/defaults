@@ -169,3 +169,5 @@ m.net4-port-connection-udp() {
 	# $2 port
 	nc $1 -u $2
 }
+alias m.net-tshark="sudo tshark"
+alias m.net-tshark-GET="sudo tshark -Y 'http.request.method == \"GET\"' "
