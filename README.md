@@ -4,9 +4,9 @@ Setup
 Temporary
 ---
 
-`curl https://raw.githubusercontent.com/nodu/defaults/master/basic.sh -o /tmp/basic.sh && source /tmp/basic`
+`curl https://raw.githubusercontent.com/nodu/defaults/master/basic.sh -o /tmp/basic.sh && source /tmp/basic.sh`
 
-`wget https://raw.githubusercontent.com/nodu/defaults/master/basic.sh -O /tmp/basic.sh && source /tmp/basic`
+`wget https://raw.githubusercontent.com/nodu/defaults/master/basic.sh -O /tmp/basic.sh && source /tmp/basic.sh`
 
 Permanent
 ---
