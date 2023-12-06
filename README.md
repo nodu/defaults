@@ -1,8 +1,18 @@
-wget https://bitbucket.org/nodu/defaults/raw/master/basic -O /tmp/basic.sh && source /tmp/basic
-curl https://bitbucket.org/nodu/defaults/raw/master/basic -o /tmp/basic.sh && source /tmp/basic
+Setup
+===
 
+Temporary
+---
 
-wget http://bit.ly/basicsh -O /tmp/basic.sh && source /tmp/basic.sh
-curl http://bit.ly/basicsh -o /tmp/basic.sh && source /tmp/basic.sh
+`curl https://raw.githubusercontent.com/nodu/defaults/master/basic.sh -o /tmp/basic.sh && source /tmp/basic`
 
+`wget https://raw.githubusercontent.com/nodu/defaults/master/basic.sh -O /tmp/basic.sh && source /tmp/basic`
+
+Permanent
+---
+
+```bash
+mkdir -p ~/defaults
+curl https://raw.githubusercontent.com/nodu/defaults/master/basic.sh -o /defaults/basic.sh
 echo 'source ~/defaults/basic.sh' >> ~/.bashrc
+```

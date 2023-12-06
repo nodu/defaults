@@ -87,7 +87,7 @@ unarchive() {
 alias sudo='sudo '
 
 alias v='nvim'
-alias v.='nvim .'
+alias vv='nvim .'
 alias sv='sudo nvim'
 
 #Networking
