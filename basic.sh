@@ -86,22 +86,6 @@ unarchive() {
 
 alias sudo='sudo '
 
-v() {
-	if command -v nvim >/dev/null 2>&1; then
-		editor="nvim"
-	else
-		editor="vim"
-	fi
-
-	if [ -n "$1" ]; then
-		path=$1
-	else
-		path="."
-	fi
-
-	$editor "$path"
-}
-
 alias sv='sudo nvim'
 
 #Networking
