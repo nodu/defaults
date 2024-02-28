@@ -86,15 +86,39 @@ unarchive() {
 
 alias sudo='sudo '
 
-alias v='nvim'
-alias vv='nvim .'
+v() {
+	if command -v nvim >/dev/null 2>&1; then
+		editor="nvim"
+	else
+		editor="vim"
+	fi
+
+	if [ -n "$1" ]; then
+		path=$1
+	else
+		path="."
+	fi
+
+	$editor "$path"
+}
+
 alias sv='sudo nvim'
 
 #Networking
 alias m.whatsmyip="curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'"
-alias m.whereami-latlong='curl ipinfo.io/loc'
-alias m.whereami-country='curl ipinfo.io/country'
-alias m.whereami='curl ipinfo.io/json'
+
+# Location information functions
+m.whereami_latlong() {
+	curl ipinfo.io/loc
+}
+
+m.whereami_country() {
+	curl ipinfo.io/country
+}
+
+m.whereami() {
+	curl ipinfo.io/json
+}
 
 # Layer 1: Physical - Is our physical interface up?
 alias m.net1-interfaces='ip -br link show'
