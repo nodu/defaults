@@ -56,14 +56,14 @@ alias df='df -h'
 #alias du='du -h --max-depth=1'
 alias dusort='du -sh * | sort -h'
 
-archive() {
+zip-archive() {
 	# $1 destination archive name
 	# $2 archive folder
 	zip -r $1 $2
 }
 
 # Extract
-unarchive() {
+zip-unarchive() {
 	if [ -f $1 ]; then
 		case $1 in
 		*.tar.bz2) tar xvjf $1 ;;
