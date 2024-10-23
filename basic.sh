@@ -161,7 +161,11 @@ alias m.net4-ports-local='ss -tunlp4' #check local listening ports
 alias m.net4-ports-local-process='sudo netstat -tulpn' #show process
 
 m.net4-ports-remote() {
-  #$1 ip/host
+  if [ -z "$1" ]; then
+    echo "Usage: $0 <ip/host>"
+    return 1
+  fi
+
   sudo nmap -sTU -O $1
 }
 
