@@ -5,6 +5,9 @@ alias srch='grep -rniI --exclude-dir={bundles,dist,node_modules,bower_components
 srchFilename() {
   find . -iname "*$1*"
 }
+srchFoldername() {
+  find . -iname "*$1*" -type d
+}
 
 # Navigation
 alias ..='cd ..'
@@ -57,9 +60,12 @@ alias df='df -h'
 alias dusort='du -sh * | sort -h'
 
 zip-archive() {
+  if [ -z "$1" ]; then
+    echo "Usage: $0 folder_name"
+    return 1
+  fi
   # $1 destination archive name
-  # $2 archive folder
-  zip -r $1 $2
+  zip -r "$1.zip" "$1"
 }
 
 # Extract
