@@ -1,3 +1,5 @@
+echo 'Loaded: network.sh'
+
 #Networking
 alias m.whatsmyip="curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'"
 

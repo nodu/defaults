@@ -1,6 +1,4 @@
-source ./network.sh
-source ./git.sh
-echo 'basic aliases sourced'
+echo 'Loaded: basic.sh'
 
 #find strings in folder
 alias srch='grep -rniI --exclude-dir={bundles,dist,node_modules,bower_components} . -e' # ex) srch "search term"

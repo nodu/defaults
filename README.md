@@ -16,4 +16,6 @@ curl https://raw.githubusercontent.com/nodu/defaults/master/basic.sh -o /default
 curl https://raw.githubusercontent.com/nodu/defaults/master/network.sh -o /defaults/network.sh
 curl https://raw.githubusercontent.com/nodu/defaults/master/git.sh -o /defaults/git.sh
 echo 'source ~/defaults/basic.sh' >> ~/.bashrc
+echo 'source ~/defaults/network.sh' >> ~/.bashrc
+echo 'source ~/defaults/git.sh' >> ~/.bashrc
 ```
