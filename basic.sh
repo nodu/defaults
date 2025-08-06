@@ -1,3 +1,5 @@
+source ./network.sh
+source ./git.sh
 echo 'basic aliases sourced'
 
 #find strings in folder
@@ -23,35 +25,8 @@ alias rm='rm -i'
 alias ll='ls -al'
 alias l='ls -alrt'
 
-alias g='git'
-alias ga='git add'
-alias gaa='git add -A :/'
-alias gai='git add -i'
-alias gd='git diff --color'
-alias gds='git diff --staged'
-alias gdisc='git diff --ignore-space-change'
-alias gpom='git pull origin master'
-alias gpum='git push origin master'
-alias gc='git commit -v -m'
-alias gst='git status'
-alias gp='git push'
-alias gpl='git pull'
-alias gco='git checkout'
-alias gcop='git checkout -p'
-alias gcp="git cherry-pick"
-alias gs='git stash'
-alias gsa='git stash apply'
-alias gcheckpoint='git stash && git stash apply'
-alias gl='git prettylog'
-alias glog='git log --oneline --decorate --graph'
-alias glgp='git log --stat -p'
-alias ggpush='git push origin "$(git_current_branch)"'
-alias ggpull='git pull origin "$(git_current_branch)"'
-
-alias m.tail-logs="tail $(ls -rt /var/log/ -I 'wtmp*' -I '*.gz' -I 'dpkg*gz' -I 'postgresql') -vf"
-
 m.tail-logsf() {
-  tail $(ls -rt /var/log/ -I 'wtmp*' -I '*.gz' -I 'dpkg*gz' -I 'postgresql') -vf
+  tail "$(ls -rt /var/log/ -I 'wtmp*' -I '*.gz' -I 'dpkg*gz' -I 'postgresql')" -vf
 }
 
 # This handy tool tells you how much space you have left on a drive
@@ -59,7 +34,7 @@ alias df='df -h'
 #alias du='du -h --max-depth=1'
 alias dusort='du -sh * | sort -h'
 
-zip-archive() {
+m.zip-archive() {
   if [ -z "$1" ]; then
     echo "Usage: $0 folder_name"
     return 1
@@ -69,24 +44,24 @@ zip-archive() {
 }
 
 # Extract
-zip-unarchive() {
-  if [ -f $1 ]; then
-    case $1 in
-    *.tar.bz2) tar xvjf $1 ;;
-    *.tar.gz) tar xvzf $1 ;;
-    *.bz2) bunzip2 $1 ;;
-    *.rar) unrar x $1 ;;
-    *.gz) gunzip $1 ;;
-    *.tar) tar xvf $1 ;;
-    *.tbz2) tar xvjf $1 ;;
-    *.tgz) tar xvzf $1 ;;
-    *.zip) unzip $1 ;;
-    *.Z) uncompress $1 ;;
-    *.7z) 7z x $1 ;;
+m.zip-unarchive() {
+  if [ -f "$1" ]; then
+    case "$1" in
+    *.tar.bz2) tar xvjf "$1" ;;
+    *.tar.gz) tar xvzf "$1" ;;
+    *.bz2) bunzip2 "$1" ;;
+    *.rar) unrar x "$1" ;;
+    *.gz) gunzip "$1" ;;
+    *.tar) tar xvf "$1" ;;
+    *.tbz2) tar xvjf "$1" ;;
+    *.tgz) tar xvzf "$1" ;;
+    *.zip) unzip "$1" ;;
+    *.Z) uncompress "$1" ;;
+    *.7z) 7z x "$1" ;;
     *) echo "don't know how to extract '$1'..." ;;
     esac
   else
-    echo "'$1' is not a valid file!"
+    echo "$1 is not a valid file!"
   fi
 }
 
@@ -94,100 +69,112 @@ alias sudo='sudo '
 
 alias sv='sudo nvim'
 
-#Networking
-alias m.whatsmyip="curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'"
-
-# Location information functions
-m.whereami_latlong() {
-  curl ipinfo.io/loc
+# Internet speed test function
+m.speedtest() {
+  speedtest-cli
 }
 
-m.whereami_country() {
-  curl ipinfo.io/country
+# -a = -rlptgoD; removed -po
+# -p, --perms                 preserve permissions
+# -o, --owner                 preserve owner (super-user only)
+# -n --dry-run
+# -del --delete-excluded
+# --exclude 'file or dir'
+# --info=progress2 try if too verbose also remove -v
+
+alias m.cp-rsync='rsync --recursive --links --times --devices --specials --partial --human-readable --progress -v'
+alias m.mv-rsync='rsync --recursive --links --times --devices --specials --partial --human-readable --progress -v --remove-source-files'
+
+m.gpg-import() {
+  echo "Provide a private.key for $1"
+  gpp --import "$1"
 }
 
-m.whereami() {
-  curl ipinfo.io/json
-}
-
-# Layer 1: Physical - Is our physical interface up?
-alias m.net1-interfaces='ip -br link show'
-alias m.net1-interfaces-more='ifconfig'
-m.net1-interface-up() {
-  #if down:
-  ip link set $1 up
-}
-m.net1-interface-more() {
-  #show additional stats like dropped packets
-  ip -s link show $1
-}
-
-# Layer 2: Data Link 'local Network'
-alias m.net2-neighbors='ip neighbor show' # Check ARP Table
-m.net2-neighbor-recheck() {
-  # args: IP dev interface
-  #force new ARP resolution by deleting the record
-  ip neighbor delete $1 $2 $3
-}
-
-# Layer 3: Network/Internet
-alias m.net3-ip-address='ip -br address show' # 1st check local IP address; rules out DHCP or misconfig issues
-m.net3-ping() {
-  # Start troubleshooting remote host resolution
-  ping $1
-}
-m.net3-traceroute() {
-  # Next check the route to the remote host with
-  traceroute $1
-}
-
-alias m.net3-gateway='ip route show' #check routing table for upstream gateways
-m.net3-gateway-check() {
-  # check the route for a specific prefix:
-  #ip route show 10.0.0.0/8
-  ip route show $1
-}
-m.net3-dns-check() {
-  #DNS not L3 protocol
-  ##nslookup www.google.com
-  nslookup $1
-}
-
-# Layer 4: Transport - TCP/UDP
-#
-alias m.net4-httpstat="httpstat"      #check curl connection statistics
-alias m.net4-ports-local='ss -tunlp4' #check local listening ports
-# -t - Show TCP ports.
-# -u - Show UDP ports.
-# -n - Do not try to resolve hostnames.
-# -l - Show only listening ports.
-# -p - Show the processes that are using a particular socket.
-# -4 - Show only IPv4 sockets.
-
-alias m.net4-ports-local-process='sudo netstat -tulpn' #show process
-
-m.net4-ports-remote() {
-  if [ -z "$1" ]; then
-    echo "Usage: $0 <ip/host>"
+m.gpg-encrypt-sign() {
+  # Check if either --help is called or not enough arguments are provided
+  if [[ "$1" == "--help" || $# -ne 2 ]]; then
+    echo "Usage: m.gpg-encrypt-sign <recipient> <file>"
+    echo ""
+    echo "Encrypt and sign a file for a specified recipient using GPG."
+    echo ""
+    echo "Arguments:"
+    echo "  <recipient>  The GPG key ID, email, or user ID of the recipient"
+    echo "  <file>       The file you want to encrypt and sign"
     return 1
   fi
 
-  sudo nmap -sTU -O $1
+  # Encrypt and sign the file
+  gpg --encrypt --sign -r "$1" "$2"
+}
+m.gpg-encrypt() {
+  # Check if either --help is called or if no arguments are provided
+  if [[ "$1" == "--help" || $# -ne 1 ]]; then
+    echo "Usage: m.gpg-encrypt <file>"
+    echo ""
+    echo "Encrypt a file symmetrically using GPG."
+    echo ""
+    echo "Arguments:"
+    echo "  <file>   The file you want to encrypt"
+    return 1
+  fi
+
+  # Encrypt the file symmetrically
+  gpg --symmetric "$1"
+}
+m.gpg-decrypt() {
+  # Check if a file was actually passed
+  if [[ -z "$1" ]]; then
+    echo "Usage: m.gpg-decrypt <file.gpg>"
+    return 1
+  fi
+
+  # Strip the .gpg extension from the file name if it exists
+  output_file="${1%.gpg}"
+
+  # Perform the decryption, specifying the output file
+  gpg --output "$output_file" --decrypt "$1"
 }
 
-m.net4-port-connection-tcp() {
-  # telnet database.example.com 3306
-  # $1 ip/host
-  # $2 port
-  telnet $1 $2
+m.base64-decode() {
+  echo -n "$1" | base64 -d
 }
 
-m.net4-port-connection-udp() {
-  # Danger, uninstall after using nc
-  # nc 192.168.122.1 -u 80
-  # $1 ip/host
-  # $2 port
-  nc $1 -u $2
+m.base64-encode() {
+  echo -n "$1" | base64
 }
-alias m.net-tshark="sudo tshark"
-alias m.net-tshark-GET="sudo tshark -Y 'http.request.method == \"GET\"' "
+
+ff() {
+  m.ff
+}
+
+function m.fc() {
+  local file
+  file=$(fzf --preview 'bat --style=numbers --color=always --line-range :500 {}')
+  if [[ $file ]]; then
+    cat "$file"
+    echo "$file"
+  else
+    echo "cancelled m.ff"
+  fi
+}
+
+function m.fd() {
+  local dir
+  dir=$(find ${1:-.} -type d 2>/dev/null | fzf +m) && cd "$dir"
+  echo "$dir"
+  ls
+}
+
+function m.kill() {
+  local pid
+  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+
+  if [ "x$pid" != "x" ]; then
+    echo "$pid" | xargs kill -"${1:-9}"
+  fi
+}
+function m.env() {
+  local out
+  out=$(env | fzf)
+  echo "$(echo "$out" | cut -d= -f2)"
+}
