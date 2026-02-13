@@ -95,3 +95,88 @@ check_git_status() {
     sh -c "cd '$dir'/../ && git_status=\$(git status -s); if [ ! -z \"\$git_status\" ]; then echo -e \"\nGIT STATUS IN ${dir//\.git/}\"; echo \"\$git_status\"; fi"
   done
 }
+
+# Add a worktree for an existing branch
+# See: https://git-scm.com/docs/git-worktree#_commands
+# Usage: m.git-tree-add <path> <branch>
+m.git-tree-add() {
+  if [[ $# -lt 2 ]]; then
+    echo "Usage: m.git-tree-add <path> <branch>"
+    return 1
+  fi
+  git worktree add "$1" "$2"
+}
+
+# Create a worktree with a new branch
+# See: https://git-scm.com/docs/git-worktree#_commands
+# Usage: m.git-tree-create <path> <new-branch> [start-point]
+m.git-tree-create() {
+  if [[ $# -lt 2 ]]; then
+    echo "Usage: m.git-tree-create <path> <new-branch> [start-point]"
+    return 1
+  fi
+  local path="$1" branch="$2" start="${3:-HEAD}"
+  git worktree add -b "$branch" "$path" "$start"
+}
+
+# List all worktrees
+# See: https://git-scm.com/docs/git-worktree#_commands
+# Usage: m.git-tree-list
+m.git-tree-list() {
+  git worktree list
+}
+
+# Remove a worktree
+# See: https://git-scm.com/docs/git-worktree#_commands
+# Usage: m.git-tree-remove <path>
+m.git-tree-remove() {
+  if [[ $# -lt 1 ]]; then
+    echo "Usage: m.git-tree-remove <path>"
+    return 1
+  fi
+  git worktree remove "$1"
+}
+
+# Force-remove a worktree (even if dirty)
+# See: https://git-scm.com/docs/git-worktree#_commands
+# Usage: m.git-tree-remove-force <path>
+m.git-tree-remove-force() {
+  if [[ $# -lt 1 ]]; then
+    echo "Usage: m.git-tree-remove-force <path>"
+    return 1
+  fi
+  git worktree remove --force "$1"
+}
+
+# Prune stale worktree references
+# See: https://git-scm.com/docs/git-worktree#_commands
+# Usage: m.git-tree-prune
+m.git-tree-prune() {
+  git worktree prune -v
+}
+
+# Lock a worktree (prevent pruning)
+# See: https://git-scm.com/docs/git-worktree#_commands
+# Usage: m.git-tree-lock <path> [reason]
+m.git-tree-lock() {
+  if [[ $# -lt 1 ]]; then
+    echo "Usage: m.git-tree-lock <path> [reason]"
+    return 1
+  fi
+  if [[ -n "$2" ]]; then
+    git worktree lock --reason "$2" "$1"
+  else
+    git worktree lock "$1"
+  fi
+}
+
+# Unlock a worktree
+# See: https://git-scm.com/docs/git-worktree#_commands
+# Usage: m.git-tree-unlock <path>
+m.git-tree-unlock() {
+  if [[ $# -lt 1 ]]; then
+    echo "Usage: m.git-tree-unlock <path>"
+    return 1
+  fi
+  git worktree unlock "$1"
+}
