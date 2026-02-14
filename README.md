@@ -38,7 +38,7 @@ Import and configure in your Home Manager config:
 }
 ```
 
-Sources scripts into both `programs.bash.initExtra` and `programs.zsh.initExtra`, and adds grouped runtime dependencies to `home.packages`.
+Sources scripts into both `programs.bash.initExtra` and `programs.zsh.initContent`, and adds grouped runtime dependencies to `home.packages`.
 
 ### Option 2: NixOS Module (system-wide)
 

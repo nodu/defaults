@@ -79,6 +79,6 @@ in
       ++ (lib.optionals cfg.network.enable networkDeps);
 
     programs.bash.initExtra = initScript;
-    programs.zsh.initExtra = initScript;
+    programs.zsh.initContent = initScript;
   };
 }
