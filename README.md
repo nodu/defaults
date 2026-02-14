@@ -75,12 +75,12 @@ Sources scripts into `environment.interactiveShellInit` (all users, all interact
 
 ### Module Options
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `programs.defaults.enable` | `false` | Master toggle |
-| `programs.defaults.basic.enable` | `true` | Shell aliases and functions (fzf, bat, neovim, rsync, gnupg, zip, etc.) |
-| `programs.defaults.git.enable` | `true` | Git aliases, shortcuts, and worktree helpers (git, fzf) |
-| `programs.defaults.network.enable` | `true` | Networking diagnostics by OSI layer (nmap, traceroute, dnsutils, wireshark, etc.) |
+| Option                             | Default | Description                                                                       |
+| ---------------------------------- | ------- | --------------------------------------------------------------------------------- |
+| `programs.defaults.enable`         | `false` | Master toggle                                                                     |
+| `programs.defaults.basic.enable`   | `true`  | Shell aliases and functions (fzf, bat, rsync, gnupg, zip, etc.)                   |
+| `programs.defaults.git.enable`     | `true`  | Git aliases, shortcuts, and worktree helpers (git, fzf)                           |
+| `programs.defaults.network.enable` | `true`  | Networking diagnostics by OSI layer (nmap, traceroute, dnsutils, wireshark, etc.) |
 
 All sub-options default to `true` when the module is enabled. Set any to `false` to skip that group.
 

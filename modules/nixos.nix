@@ -10,7 +10,6 @@ let
   basicDeps = with pkgs; [
     fzf
     bat
-    neovim
     rsync
     gnupg
     zip
