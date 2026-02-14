@@ -85,7 +85,7 @@ alias m.mv-rsync='rsync --recursive --links --times --devices --specials --parti
 
 m.gpg-import() {
   echo "Provide a private.key for $1"
-  gpp --import "$1"
+  gpg --import "$1"
 }
 
 m.gpg-encrypt-sign() {

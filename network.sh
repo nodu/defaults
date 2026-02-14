@@ -25,7 +25,7 @@ m.net1-interface-up() {
 }
 m.net1-interface-more() {
   #show additional stats like dropped packets
-  ip -s link show "1$"
+  ip -s link show "$1"
 }
 
 # Layer 2: Data Link 'local Network'
@@ -33,30 +33,30 @@ alias m.net2-neighbors='ip neighbor show' # Check ARP Table
 m.net2-neighbor-recheck() {
   # args: IP dev interface
   #force new ARP resolution by deleting the record
-  ip neighbor delete "1$" "$2" "$3"
+  ip neighbor delete "$1" "$2" "$3"
 }
 
 # Layer 3: Network/Internet
 alias m.net3-ip-address='ip -br address show' # 1st check local IP address; rules out DHCP or misconfig issues
 m.net3-ping() {
   # Start troubleshooting remote host resolution
-  ping "1$"
+  ping "$1"
 }
 m.net3-traceroute() {
   # Next check the route to the remote host with
-  traceroute "1$"
+  traceroute "$1"
 }
 
 alias m.net3-gateway='ip route show' #check routing table for upstream gateways
 m.net3-gateway-check() {
   # check the route for a specific prefix:
   #ip route show 10.0.0.0/8
-  ip route show "1$"
+  ip route show "$1"
 }
 m.net3-dns-check() {
   #DNS not L3 protocol
   ##nslookup www.google.com
-  nslookup "1$"
+  nslookup "$1"
 }
 
 # Layer 4: Transport - TCP/UDP

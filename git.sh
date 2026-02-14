@@ -4,6 +4,9 @@ alias g='git'
 alias ga='git add'
 alias gaa='git add -A :/'
 alias gai='git add -i'
+m.git-add-patch() {
+  git add --patch "$@"
+}
 alias gd='git diff --color'
 alias gds='git diff --staged'
 alias gdisc='git diff --ignore-space-change'
