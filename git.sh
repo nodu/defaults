@@ -87,16 +87,37 @@ alias m.gs=m.git-show
 
 check_git_status() {
   local start_dir="$1"
+  local max_depth="${2:-3}"
 
-  # Check if the provided directory exists
   if [ ! -d "$start_dir" ]; then
     echo "The directory $start_dir does not exist."
     return 1
   fi
 
-  find "$start_dir" -type d -name '.git' | while read dir; do
-    sh -c "cd '$dir'/../ && git_status=\$(git status -s); if [ ! -z \"\$git_status\" ]; then echo -e \"\nGIT STATUS IN ${dir//\.git/}\"; echo \"\$git_status\"; fi"
+  local tmpdir
+  tmpdir=$(mktemp -d)
+  local i=0
+
+  # Find repos (maxdepth to skip deeply nested .git dirs),
+  # run git status in parallel using git -C (no subprocess spawning)
+  find "$start_dir" -maxdepth "$max_depth" -type d -name '.git' | while read -r dir; do
+    local repo_dir="${dir%/.git}"
+    (
+      git_status=$(git -C "$repo_dir" status -s 2>/dev/null)
+      if [[ -n "$git_status" ]]; then
+        printf "\nGIT STATUS IN %s\n%s\n" "$repo_dir/" "$git_status" >"$tmpdir/$i"
+      fi
+    ) &
+    ((i++))
   done
+  wait
+
+  # Print results in stable order
+  for f in "$tmpdir"/*; do
+    [[ -f "$f" ]] && cat "$f"
+  done
+
+  rm -rf "$tmpdir"
 }
 
 # Add a worktree for an existing branch
