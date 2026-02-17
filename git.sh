@@ -75,10 +75,10 @@ alias m.grs=m.git-restore-staged
 function m.git-show() {
   git log --graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" |
     fzf --ansi --no-sort --reverse --tiebreak=index --preview \
-      'f() { set -- $(echo -- "$@" | grep -o "[a-f0-9]\{7\}"); [ $# -eq 0 ] || git show --color=always $1 ; }; f {}' \
+      'f() { set -- $(echo -- "$@" | grep -o "[a-f0-9]\{7\}"); [ $# -eq 0 ] || git show --color=always $1 | delta --paging=never ; }; f {}' \
       --bind "ctrl-d:preview-page-down,ctrl-u:preview-page-up,enter:execute:
                 (grep -o '[a-f0-9]\{7\}' | head -1 |
-                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+                xargs -I % sh -c 'git show --color=always % | delta') << 'FZF-EOF'
                 {}
 FZF-EOF" --preview-window=right:60%
 }
