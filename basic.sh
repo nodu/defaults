@@ -176,3 +176,16 @@ function m.env() {
   out=$(env | fzf)
   echo "$(echo "$out" | cut -d= -f2)"
 }
+
+function m.source-yaml() {
+  local file="$1"
+  if [ -z "$file" ]; then
+    echo "Usage: source-yaml <file>" >&2
+    return 1
+  fi
+  if [ ! -f "$file" ]; then
+    echo "source-yaml: file not found: $file" >&2
+    return 1
+  fi
+  eval "$(yq -r 'to_entries | .[] | "export \(.key)=\(.value | @sh)"' "$file")"
+}
