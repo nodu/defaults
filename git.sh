@@ -119,7 +119,8 @@ check_git_status() {
   wait
 
   # Print results in stable order
-  for f in "$tmpdir"/*; do
+  # (N) = zsh NULL_GLOB: no error when glob has no matches
+  for f in "$tmpdir"/*(N); do
     [[ -f "$f" ]] && cat "$f"
   done
 
