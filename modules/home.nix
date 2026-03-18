@@ -14,8 +14,9 @@ let
     gnupg
     zip
     unzip
-    unrar-free
     p7zip
+  ] ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+    pkgs.unrar-free
   ];
 
   gitDeps = with pkgs; [
