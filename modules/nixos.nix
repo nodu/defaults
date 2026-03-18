@@ -26,13 +26,14 @@ let
   networkDeps = with pkgs; [
     curl
     nmap
-    traceroute
     dnsutils
-    iproute2
     netcat-gnu
     wireshark-cli
     speedtest-cli
     inetutils
+  ] ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+    traceroute
+    iproute2
   ];
 
   scriptSources =

@@ -52,7 +52,13 @@ m.git-rebase-continue() {
 m.git-stardate() {
   echo "./stardate.sh \"last monday 8:07:23pm\" \"init\" "
 
-  stardate=$(date -d "$1" +"%a %b %d %T %Y %z")
+  if [[ "$(uname -s)" == "Linux" ]]; then
+    stardate=$(date -d "$1" +"%a %b %d %T %Y %z")
+  else
+    # macOS BSD date: parse the human-readable date string via -j -f
+    stardate=$(date -j -f "%a %b %d %T %Y %z" "$1" +"%a %b %d %T %Y %z" 2>/dev/null ||
+      date -j +"%a %b %d %T %Y %z")
+  fi
 
   GIT_COMMITTER_DATE="$stardate" git commit --date "$stardate" -m "$2"
 

@@ -24,13 +24,17 @@ alias ll='ls -al'
 alias l='ls -alrt'
 
 m.tail-logsf() {
-  tail "$(ls -rt /var/log/ -I 'wtmp*' -I '*.gz' -I 'dpkg*gz' -I 'postgresql')" -vf
+  if [[ "$(uname -s)" == "Linux" ]]; then
+    tail -vf "$(ls -rt /var/log/ -I 'wtmp*' -I '*.gz' -I 'dpkg*gz' -I 'postgresql' | head -1)"
+  else
+    tail -f /var/log/system.log
+  fi
 }
 
 # This handy tool tells you how much space you have left on a drive
 alias df='df -h'
 #alias du='du -h --max-depth=1'
-alias dusort='du -sh * | sort -h'
+alias dusort='du -sh * | sort -rn'
 
 m.zip-archive() {
   if [ -z "$1" ]; then
@@ -134,7 +138,7 @@ m.gpg-decrypt() {
 }
 
 m.base64-decode() {
-  echo -n "$1" | base64 -d
+  echo -n "$1" | base64 --decode
 }
 
 m.base64-encode() {
