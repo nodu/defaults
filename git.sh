@@ -127,6 +127,16 @@ check_git_status() {
   rm -rf "$tmpdir"
 }
 
+# Compute the worktree path for a branch
+_git-worktree-path() {
+  local branch="$1"
+  local repo_root
+  repo_root=$(git rev-parse --show-toplevel) || return 1
+  local repo_name
+  repo_name=$(basename "$repo_root")
+  echo "$(dirname "$repo_root")/${repo_name}-${branch//\//-}"
+}
+
 # Add a worktree for an existing branch
 # See: https://git-scm.com/docs/git-worktree#_commands
 # Usage: m.git-tree-add <branch>
@@ -135,13 +145,9 @@ m.git-tree-add() {
     echo "Usage: m.git-tree-add <branch>"
     return 1
   fi
-  local branch="$1"
-  local repo_root
-  repo_root=$(git rev-parse --show-toplevel) || return 1
-  local repo_name
-  repo_name=$(basename "$repo_root")
-  local worktree_path="$(dirname "$repo_root")/${repo_name}-${branch//\//-}"
-  git worktree add "$worktree_path" "$branch"
+  local worktree_path
+  worktree_path=$(_git-worktree-path "$1") || return 1
+  git worktree add "$worktree_path" "$1"
 }
 
 # Create a worktree with a new branch
@@ -150,15 +156,21 @@ m.git-tree-add() {
 m.git-tree-create() {
   if [[ $# -lt 1 ]]; then
     echo "Usage: m.git-tree-create <new-branch> [start-point]"
+    echo "  start-point: branch, tag, or commit to base the new branch from (default: main)"
     return 1
   fi
   local branch="$1" start="${2:-main}"
-  local repo_root
-  repo_root=$(git rev-parse --show-toplevel) || return 1
-  local repo_name
-  repo_name=$(basename "$repo_root")
-  local worktree_path="$(dirname "$repo_root")/${repo_name}-${branch//\//-}"
+  local worktree_path
+  worktree_path=$(_git-worktree-path "$branch") || return 1
   git worktree add -b "$branch" "$worktree_path" "$start"
+}
+
+# Create a worktree with a new branch and cd into it
+# Usage: m.git-tree-create-cd <new-branch> [start-point]
+m.git-tree-create-cd() {
+  local worktree_path
+  worktree_path=$(_git-worktree-path "$1") || return 1
+  m.git-tree-create "$@" && cd "$worktree_path"
 }
 
 # List all worktrees
