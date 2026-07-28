@@ -175,9 +175,21 @@ m.git-tree-create-cd() {
 
 # List all worktrees
 # See: https://git-scm.com/docs/git-worktree#_commands
+# Usage: m.git-tree-list-raw
+m.git-tree-list-raw() {
+  git worktree list
+}
+
+# Select a worktree with fzf and cd into it
+# See: https://git-scm.com/docs/git-worktree#_commands
 # Usage: m.git-tree-list
 m.git-tree-list() {
-  git worktree list
+  local selection worktree_path
+  selection=$(git worktree list \
+    | fzf --prompt='git worktree> ' --preview='git -C {1} status --short --branch') || return
+
+  worktree_path=${selection%% *}
+  [ -n "$worktree_path" ] && cd "$worktree_path"
 }
 
 # Remove a worktree
