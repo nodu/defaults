@@ -91,6 +91,14 @@ FZF-EOF" --preview-window=right:60%
 
 alias m.gs=m.git-show
 
+m.git-deployed-tags() {
+  git fetch origin '+refs/tags/*:refs/tags/*' &&
+    git log --tags --no-walk \
+      --decorate-refs='refs/tags/*' \
+      --pretty=format:'%H %(decorate:prefix=,suffix=,separator= ,tag=)'
+  printf '\n'
+}
+
 check_git_status() {
   local start_dir="$1"
   local max_depth="${2:-3}"
